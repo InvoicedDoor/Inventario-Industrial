@@ -1,0 +1,13 @@
+Proyecto inventario industrial
+
+Introducción
+
+Este proyecto nace a partir de las necesidades de una empresa de mantenimiento industrial por llevar a cabo un mejor manejo de sus inventarios, para lo cual se planteó en un inicio realizarlo en una simple hoja de cálculo, pero el proyecto cada vez escalaba más y poco a poco fue requiriendo mejor infraetructura. Actualmente la empresa que requería el proyecto dejó de interesarle pero como meta personal me propuse en terminar el proyecto conforme a lo que se solicitó en un inicio.
+
+El inventario realiza a grandes rasgos el registro de las entradas y salidas de materiales de diferentes categorías y unidades de medida, las cuales se almacenan en una base de datos con un esquema similar al que se muestra a continuación:
+
+
+
+Otro punto importante es que la base de datos es muy diferente a la que existió en un inicio, pues aquí se muestra normalizada mientras que en la versión anterior del proyecto estaba más desorganizada, por lo cual la lógica de negocio es lo único que tiene del proyecto original.
+
+Además de los aspectos básicos ya comentados, se buscará implementar IA en este programa para la asistencia de los usuarios, ya sea para el registro de materiales/herramientas o algún otro aspecto como la estadística de consumo de materiales.

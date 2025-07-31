@@ -1,41 +1,41 @@
 from sqlmodel import Session, select
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from src.Utilities.DBConnection.DBConnect import engine
-from ..models.ConsumersModel import ConsumersModel
-from ..dtos.ConsumersDtos import ConsumersDto
 from src.Utilities.models.RepoResponse import RepoResponse
+from ..models.ProductsModel import ProductsModel
+from ..dtos.ProductDto import ProductDto
 
-def get_consumers(filters: ConsumersModel):
+def get_products(filters: ProductsModel):
     try:
         with Session(engine) as session:
-            query = select(ConsumersModel)
+            query = select(ProductsModel)
 
-            annotations = ConsumersModel.__annotations__
+            annotations = ProductsModel.__annotations__
             for field, value in filters.model_dump(exclude_none=True).items():
-                column: InstrumentedAttribute = getattr(ConsumersModel, field)
-
+                column: InstrumentedAttribute = getattr(ProductsModel, field)
+                
                 if annotations.get(field) == str:
                     query = query.where(column.like(f"%{value}%"))
                 else:
                     query = query.where(column == value)
-
+                
             results = session.exec(query)
 
             elements = results.all()
             
             return RepoResponse(data=elements, message="Success")
-        
+
     except Exception as ex:
         return RepoResponse(False, f"Error: {ex}")
+    
 
-
-def get_consumer_by_id(id: int):
+def get_product_by_id(product_id: int):
     try:
-        with Session(engine) as session:    
-            results = session.get(ConsumersModel, id)
+        with Session(engine) as session:
+            results = session.get(ProductsModel, product_id)
 
             if results is None:
-                return RepoResponse(False, "No se encontró el consumidor")
+                return RepoResponse(False, "No se encontró el producto")
             
             return RepoResponse(message="Correcto", data=results)
         
@@ -43,33 +43,33 @@ def get_consumer_by_id(id: int):
         return RepoResponse(False, f"Error: {ex}")
     
 
-
-def add_consumer(consumer: ConsumersDto):
+def add_product(product: ProductDto):
     try:
-        new_consumer = ConsumersDto(**consumer)
         with Session(engine) as session:
-            session.add(new_consumer)
+            new_product = ProductsModel(**product.model_dump())
+            session.add(new_product)
 
             if len(session.new) > 0:
                 session.commit()
-                return RepoResponse(message="Consumidor agregado")
+                return RepoResponse(message="Producto agregado")
+            
             session.rollback()
-            return RepoResponse(False, "El elemento ya existe en la base de datos")
+            return RepoResponse(False, "El producto ya está agregado en la base de datos")
     except Exception as ex:
         return RepoResponse(False, f"Error: {ex}")
-    
-    
-def modify_consumer(consumer: ConsumersModel):
+
+
+def modify_product(product: ProductsModel):
     try:
         with Session(engine) as session:
-            result = session.merge(consumer)
+            result = session.merge(product)
 
             if result is not None:
                 session.commit()
-                return RepoResponse(message="Elemento modificado", data=result)
+                return RepoResponse(message="Producto modificado", data=result)
             
             session.rollback()
-            return RepoResponse(False, "No se pudo modificar el elemento")
-
-    except Exception as ex: 
+            return RepoResponse(False, "No se pudo modificar el producto")
+    
+    except Exception as ex:
         return RepoResponse(False, f"Error: {ex}")

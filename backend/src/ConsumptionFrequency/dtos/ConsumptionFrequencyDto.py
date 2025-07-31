@@ -1,4 +1,5 @@
 from pydantic import BaseModel,  Field
+from typing import Optional
 
 class ConsumptionFrequencyDto(BaseModel):
-    frequency: str = Field(..., description="Key to recognice the consumption frequency")
+    frequency: Optional[str] = Field(default=None, description="Key to recognice the consumption frequency")

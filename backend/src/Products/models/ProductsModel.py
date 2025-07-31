@@ -2,7 +2,7 @@ from sqlmodel import SQLModel, Field
 
 class ProductsModel(SQLModel, table=True):
     __tablename__ = "Products"
-    id: int = Field(...)
+    id: int = Field(..., primary_key=True)
     name: str = Field(...)
     measureunit_id: int = Field(...)
     frequency_id: int = Field(...)

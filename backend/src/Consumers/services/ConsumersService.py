@@ -40,7 +40,7 @@ def add_consumer_service(consumer: ConsumersDto):
         if not add_response.is_success:
             return ServiceResponse(400, "No se puede agregar el elemento")
         
-        return ServiceResponse(message="Agregado", data=add_response)
+        return ServiceResponse(message="Agregado", data=add_response.data)
     except Exception as ex:
         return ServiceResponse(500, f"Error: {ex}")
 

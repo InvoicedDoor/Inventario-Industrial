@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, Depends, Path
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from ..services.MeasuresUnitsService import (get_measure_units_service,
@@ -13,38 +13,29 @@ measure_units_router = APIRouter()
 measure_units_router.prefix = "/measure-units"
 
 @measure_units_router.get("")
-def get_measure_units_controller(request: Request):
-    try:
-        filters: MeasureUnitsModel = request.query_params
-        
+def get_measure_units_controller(request: Request, filters: MeasureUnitsDto = Depends()):
+    try:     
         measure_units = get_measure_units_service(filters)
         
         measure_units_data: list[MeasureUnitsModel] = measure_units.data
 
         json_data = jsonable_encoder(measure_units_data)
 
-        return JSONResponse(json_data, measure_units.code)
+        return JSONResponse({"data": json_data}, measure_units.code)
     
     except Exception as ex:
-        return JSONResponse([], 500)
+        return JSONResponse({"details": "Error en el servidor"}, 500)
     
 
-@measure_units_router.get("/{id}")
-def get_measure_units_by_id_controller(request: Request):
+@measure_units_router.get("/{measure_id}")
+def get_measure_units_by_id_controller(request: Request, measure_id: int = Path(..., gt=0)):
     try:
-        measure_id: int = int(request.path_params["id"])
-
-        if int(measure_id) <= 0:
-            empty_measure = MeasureUnitsModel()
-            return JSONResponse(jsonable_encoder(empty_measure), 422)
-    
         measure_unit = get_measure_unit_by_id_service(measure_id)
 
-        measure_unit_data: MeasureUnitsModel = measure_unit.data
+        measure_unit_data: MeasureUnitsModel = MeasureUnitsModel(**dict(measure_unit.data))
     
         if measure_unit.data == None:
-            empty_measure = MeasureUnitsModel()
-            return JSONResponse(jsonable_encoder(empty_measure), 404)
+            return JSONResponse({"details": "No se encontraron elementos"}, 404)
         
         json_data = jsonable_encoder(measure_unit_data)
 

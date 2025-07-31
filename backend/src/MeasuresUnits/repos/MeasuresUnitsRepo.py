@@ -1,4 +1,5 @@
 from sqlmodel import Session, select
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 from src.Utilities.DBConnection.DBConnect import engine
 from ..models.MeasureUnitsModel import MeasureUnitsModel
 from ..dtos.MeasureUnitsDto import MeasureUnitsDto
@@ -9,10 +10,18 @@ def get_measure_units(filters: MeasureUnitsModel):
         with Session(engine) as session:
             query = select(MeasureUnitsModel)
 
+            annotations = MeasureUnitsModel.__annotations__
+
             for field, value in filters.model_dump(exclude_none=True).items():
-                query = query.where(getattr(MeasureUnitsModel, field) == value)
+                column: InstrumentedAttribute = getattr(MeasureUnitsModel, field)
+
+                if annotations.get(field) == str:
+                    query = query.where(column.like(f"%{value}%"))
+                else:
+                    query = query.where(getattr(MeasureUnitsModel, field) == value)
 
             results = session.exec(query)
+            
             elements = results.all()
 
             return RepoResponse(data=elements, message="Success")

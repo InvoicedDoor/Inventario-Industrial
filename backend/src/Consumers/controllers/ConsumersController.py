@@ -11,7 +11,7 @@ from ..dtos.ConsumersDtos import ConsumersDto
 consumers_router = APIRouter(prefix="/consumers")
 
 @consumers_router.get("")
-def consumer_controller(request: Request):
+def get_consumers_controller(request: Request):
     try:
         filters: ConsumersModel = ConsumersModel(**request.query_params)
 
@@ -38,11 +38,11 @@ def get_consumer_by_id_controller(request: Request):
         
         consumer = get_consumers_by_id_service(consumer_id)
 
-        consumer_data: ConsumersModel = consumer.data
-
         if consumer.data == None:
             empty_consumer = ConsumersModel()
             return JSONResponse(jsonable_encoder(empty_consumer), 404) 
+
+        consumer_data: ConsumersModel = consumer.data
 
         json_data = jsonable_encoder(consumer_data)
 
@@ -53,6 +53,23 @@ def get_consumer_by_id_controller(request: Request):
 
 
 @consumers_router.post("")
+def add_consumer_controller(consumer: ConsumersDto):
+    try:
+        if consumer.name == None:
+            return JSONResponse("El cuerpo no puede estar vacío", 409)
+        
+        response_service = add_consumer_service(consumer)
+
+        if response_service.data == None:
+            return JSONResponse(response_service.message, 409)
+        
+        return JSONResponse("Registrado")
+    except Exception as ex:
+        empty_consumer = ConsumersModel()
+        return JSONResponse(empty_consumer.model_dump_json(), 500)
+
+
+@consumers_router.patch("/{id}")
 def update_consumer_controller(request: Request, consumer: ConsumersDto):
     try:
         consumer_id: int = request.query_params.get("id")
@@ -66,22 +83,6 @@ def update_consumer_controller(request: Request, consumer: ConsumersDto):
         response_service = update_consumer_service(consumer_id, consumer)
 
         return JSONResponse(response_service.message, response_service.code)
-    except Exception as ex:
-        empty_consumer = ConsumersModel()
-        return JSONResponse(empty_consumer.model_dump_json(), 500)
-    
-@consumers_router.patch("")
-def add_consumer_controller(consumer: ConsumersDto):
-    try:
-        if consumer.name == None:
-            return JSONResponse("El cuerpo no puede estar vacío", 409)
-        
-        response_service = add_consumer_service(consumer)
-
-        if response_service.data == None:
-            return JSONResponse(response_service.message, 409)
-        
-        return JSONResponse("Registrado")
     except Exception as ex:
         empty_consumer = ConsumersModel()
         return JSONResponse(empty_consumer.model_dump_json(), 500)
