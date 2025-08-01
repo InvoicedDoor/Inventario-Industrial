@@ -10,10 +10,10 @@ export interface ModalManageProps {
     endpoint: string
     headers: Record<string, string>
     pageTitle: string
+    reloadTable: () => Promise<void>
 }
 
 interface ModalAddProps extends ModalManageProps {
-    reloadTable: () => Promise<void>
     dataToAdd: Record<string, string>
     endpoint: string
     setDataToAdd: Dispatch<SetStateAction<Record<string, string>>>
@@ -92,7 +92,7 @@ export default function ModalAdd(props: ModalAddProps) {
                                     <option value="1">Sí</option>
                                     <option value="0">No</option>
                                 </select>
-                            ) : keyHeader === "frequency_id" ? (
+                            ) : keyHeader === "frequency" ? (
                                 <select id={`input-${header}$`}
                                     value={props.dataToAdd[keyHeader] ?? ""}
                                     onChange={(e) => handleChangeData(keyHeader, e.target.value)}
@@ -102,7 +102,7 @@ export default function ModalAdd(props: ModalAddProps) {
                                         <option key={f.id} value={f.id}>{f.frequency}</option>
                                     ))}
                                 </select>
-                            ) : keyHeader === "measureunit_id" && props.pageTitle !== "MeasureUnits" ? (
+                            ) : keyHeader === "unit" && props.pageTitle !== "MeasureUnits" ? (
                                 <select id={`input-${header}$`}
                                     value={props.dataToAdd[keyHeader] ?? ""}
                                     onChange={(e) => handleChangeData(keyHeader, e.target.value)}
@@ -112,8 +112,7 @@ export default function ModalAdd(props: ModalAddProps) {
                                         <option key={u.id} value={u.id}>{u.unit}</option>
                                     ))}
                                 </select>
-                            )
-                                : (
+                            ) : (
                                     <input id={`input-${header}$`}
                                         value={props.dataToAdd[keyHeader] ?? ""}
                                         onChange={(e) => handleChangeData(keyHeader, e.target.value)}

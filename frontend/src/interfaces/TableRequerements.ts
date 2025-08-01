@@ -1,4 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
+import IFrequency from "./IFrequency";
+import IMeasureUnit from "./IMeasureUnit";
+import IProducts from "./IProducts";
 
 export default interface TableRequerements
 {
@@ -10,6 +13,10 @@ export default interface TableRequerements
     setDataToAdd: Dispatch<SetStateAction<Record<string, string>>>
     setViewModalEdit: Dispatch<SetStateAction<boolean>>
     setViewModalAdd: Dispatch<SetStateAction<boolean>>
-    setElementId: Dispatch<SetStateAction<number>>
-    optionsToSelect?: object | null
+    setDataToEdit: Dispatch<SetStateAction<Record<string, string>>>
+    optionsToSelect?: {
+            Frequency?: IFrequency[],
+            MeasuresUnits?: IMeasureUnit[],
+            Products?: IProducts[]
+        } | null
 }

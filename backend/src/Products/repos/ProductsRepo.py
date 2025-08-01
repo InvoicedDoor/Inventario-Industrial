@@ -3,6 +3,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from src.Utilities.DBConnection.DBConnect import engine
 from src.Utilities.models.RepoResponse import RepoResponse
 from ..models.ProductsModel import ProductsModel
+from ..models.ResponseProductModel import ResponseProductsModel
 from ..dtos.ProductDto import ProductDto
 
 def get_products(filters: ProductsModel):
@@ -22,8 +23,21 @@ def get_products(filters: ProductsModel):
             results = session.exec(query)
 
             elements = results.all()
+
+            newModel = [
+                ResponseProductsModel(
+                    id=product.id,
+                    name=product.name,
+                    unit=product.measureunit_id,
+                    frequency=product.frequency_id,
+                    stock=product.stock,
+                    min_stock=product.min_stock,
+                    max_stock=product.max_stock,
+                    active=product.active
+                )
+                for product in elements]
             
-            return RepoResponse(data=elements, message="Success")
+            return RepoResponse(data=newModel, message="Success")
 
     except Exception as ex:
         return RepoResponse(False, f"Error: {ex}")

@@ -2,8 +2,8 @@ export default interface IProducts
 {
     id: number
     name: string
-    measureunit_id: number
-    frequency_id: number
+    unit: number
+    frequency: number
     stock: number
     min_stock: number
     max_stock: number

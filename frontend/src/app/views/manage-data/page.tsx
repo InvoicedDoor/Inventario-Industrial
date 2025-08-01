@@ -16,6 +16,7 @@ export default function Index() {
     const [headers, setHeaders] = useState<Record<string, string>>({});
     // Cuerpo vacío para los datos a agregar en la base de datos
     const [dataToAdd, setDataToAdd] = useState<Record<string, string>>({});
+    const [dataToEdit, setDataToEdit] = useState<Record<string, string>>({});
     // Función para refrescar los datos que vienen de la base de datos cuando se actualizan o se agregan datos
     const [reloadTable, setReloadTable] = useState<() => Promise<void>>(() => async () => {});
     // Bandera para visualizar el modal de agregar elementos
@@ -26,8 +27,6 @@ export default function Index() {
     const [pageTitle, setPageTitle] = useState<string>("");
     // Variable para registrar el Endpoint que se quiere trabajar
     const [endpoint, setEndpoint] = useState<string>("");
-    // Variable para guardar el id del elemento a actualizar/eliminar
-    const [elementId, setElementId] = useState(0);
     // Se;eccionador de opciones según la tabla que se busca
     const [optionsToSelect, setOptionsToSelect] = useState<{
         Frequency: IFrequency[],
@@ -57,7 +56,7 @@ export default function Index() {
                 {pageTitle !== "" ? (
                     <Table
                         setDataToAdd={setDataToAdd}
-                        setElementId={setElementId}
+                        setDataToEdit={setDataToEdit}
                         setViewModalAdd={setViewModalAdd}
                         setViewModalEdit={setViewModalEdit}
                         dataToAdd={dataToAdd}
@@ -83,9 +82,12 @@ export default function Index() {
 
                 {viewModalEdit && headers && (
                     <ModalEdit
-                        endpoint=""
+                        reloadTable={reloadTable}
+                        setDataToEdit={setDataToEdit}
+                        endpoint={endpoint}
                         pageTitle={pageTitle}
-                        data={body.find(b => String(b["Id"]) === String(elementId)) as Record<string, string>}
+                        optionsToSelect={optionsToSelect}
+                        data={dataToEdit}
                         headers={headers}
                         setViewModal={setViewModalEdit}
                         setBody={setBody}

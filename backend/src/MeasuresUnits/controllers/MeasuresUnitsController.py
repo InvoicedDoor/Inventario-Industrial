@@ -24,7 +24,7 @@ def get_measure_units_controller(request: Request, filters: MeasureUnitsDto = De
         return JSONResponse({"data": json_data}, measure_units.code)
     
     except Exception as ex:
-        return JSONResponse({"details": "Error en el servidor"}, 500)
+        return JSONResponse({"message": "Error en el servidor"}, 500)
     
 
 @measure_units_router.get("/{measure_id}")
@@ -35,7 +35,7 @@ def get_measure_units_by_id_controller(request: Request, measure_id: int = Path(
         measure_unit_data: MeasureUnitsModel = MeasureUnitsModel(**dict(measure_unit.data))
     
         if measure_unit.data == None:
-            return JSONResponse({"details": "No se encontraron elementos"}, 404)
+            return JSONResponse({"message": "No se encontraron elementos"}, 404)
         
         json_data = jsonable_encoder(measure_unit_data)
 
@@ -48,17 +48,17 @@ def get_measure_units_by_id_controller(request: Request, measure_id: int = Path(
 async def add_measure_unit_controller(request: Request, measure_unit_data: MeasureUnitsDto):
     try:
         if (measure_unit_data.unit == ""):
-            return JSONResponse("El valor no puede estar vacío", 400)
+            return JSONResponse({"message": "El valor no puede estar vacío"}, 400)
 
         response_service = add_measure_unit_service(measure_unit_data)
 
         if response_service.data == None:
-            return JSONResponse("No se agregó el valor", 409)
+            return JSONResponse({"message": "No se agregó el valor"}, 409)
 
-        return JSONResponse("Registrado")
+        return JSONResponse({"message": "Registrado"})
     except Exception as ex:
         print(ex)
-        return JSONResponse("Error en el servidor", 500)
+        return JSONResponse({"message":"Error en el servidor"}, 500)
     
 @measure_units_router.patch("")
 def update_measure_unit_controller(request: Request, measure_unit_data: MeasureUnitsDto):
@@ -66,10 +66,10 @@ def update_measure_unit_controller(request: Request, measure_unit_data: MeasureU
         measure_id: int = request.query_params.get("id")
 
         if (measure_id == None or measure_id == ""):
-            return JSONResponse("El parámetro id no puede estar vacío", 400)
+            return JSONResponse({"message":"El parámetro id no puede estar vacío"}, 400)
 
         if (measure_unit_data.unit == ""):
-            return JSONResponse("El cuerpo no puede estar vacío", 400)
+            return JSONResponse({"message":"El cuerpo no puede estar vacío"}, 400)
 
         response_service = update_measure_unit_service(measure_id, measure_unit_data)
 
@@ -77,4 +77,4 @@ def update_measure_unit_controller(request: Request, measure_unit_data: MeasureU
     
     except Exception as ex:
         print(ex)
-        return JSONResponse("Error en el servidor", 500)
+        return JSONResponse({"message":"Error en el servidor"}, 500)

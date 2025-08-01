@@ -7,11 +7,12 @@ import { createPopper, Placement } from "@popperjs/core"
 import { useEffect, useRef, useState } from "react";
 import Popper from "./Popper";
 
-export default function Table({Body, Headers, TitlePage, setElementId, setViewModalAdd, setViewModalEdit}: TableRequerements) {
+export default function Table({Body, Headers, TitlePage, optionsToSelect, setDataToEdit, setViewModalAdd, setViewModalEdit}: TableRequerements) {
     const popperEdit = useRef<HTMLDivElement>(null);
     const popperDelete = useRef<HTMLDivElement>(null);
     const btnRef = useRef<HTMLButtonElement>(null);
     const popperRef = useRef<HTMLDivElement>(null);
+    const [tempDataToEdit, setTempDataToEdit] = useState<Record<string, string>[]>([])
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -28,6 +29,15 @@ export default function Table({Body, Headers, TitlePage, setElementId, setViewMo
                 ]
             })
         }
+
+        if (TitlePage === "Products")
+            setTempDataToEdit(optionsToSelect?.Products as unknown as Array<Record<string, string>>)
+        else if (TitlePage === "MeasureUnits")
+            setTempDataToEdit(optionsToSelect?.MeasuresUnits as unknown as Array<Record<string, string>>)
+        else if (TitlePage === "ConsumptionFrequency")
+            setTempDataToEdit(optionsToSelect?.Frequency as unknown as Array<Record<string, string>>)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
 
     const handleMouseEnterEvent = (rowId: string) => {
@@ -85,12 +95,13 @@ export default function Table({Body, Headers, TitlePage, setElementId, setViewMo
                             ) )}
                             <td className="d-flex justify-content-around">
                                 <div className="relative">
-                                    <button className="btn btn-primary" disabled ref={btnRef}
+                                    <button className="btn btn-primary" ref={btnRef}
                                         onMouseEnter={() => handleMouseEnterEvent(`popper-edit-${rowIndex}`)}
                                         onMouseLeave={() => handleMouseLeaveEvent(`popper-edit-${rowIndex}`)}
                                         onClick={() => {
-                                            setViewModalEdit(true)
-                                            setElementId(parseInt(row["Id"]))}} >
+                                            setDataToEdit(tempDataToEdit.find(b => String(b["id"]) === String(row["id"])) ?? {})
+                                            console.log(tempDataToEdit.find(b => String(b["id"]) === String(row["id"])))
+                                            setViewModalEdit(true)}} >
                                         <FontAwesomeIcon className="h-5" icon={faGear} />
                                     </button>
                                     <Popper Text="Editar" id={`popper-edit-${rowIndex}`} Ref={popperEdit} />

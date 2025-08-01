@@ -64,15 +64,15 @@ export default function LeftBar({ setReloadTable, setBody, setHeaders, setOption
 
     const tableHeaders = {
         Frequency: {
-            frequency_id: "Frecuencia"
+            frequency: "Frecuencia"
         },
         MeasuresUnits: {
-            measureunit_id: "Unidad"
+            unit: "Unidad"
         },
         Products: {
             name: "Nombre",
-            measureunit_id: "Unidad de medida",
-            frequency_id: "Frecuencia",
+            unit: "Unidad de medida",
+            frequency: "Frecuencia",
             stock: "Stock",
             min_stock: "Stock mínimo",
             max_stock: "Stock máximo",
@@ -88,7 +88,7 @@ export default function LeftBar({ setReloadTable, setBody, setHeaders, setOption
                     onClick={() => {
                         setBody(frequencies.map((item) => ({
                             id: String(item.id),
-                            frequency_id: String(item.frequency)
+                            frequency: String(item.frequency)
                         })));
                         setHeaders(tableHeaders.Frequency);
                         setPageTitle("ConsumptionFrequency")
@@ -100,12 +100,19 @@ export default function LeftBar({ setReloadTable, setBody, setHeaders, setOption
                     onClick={() => {
                         setBody(optionsOfMenu.MeasuresUnits.map(item => ({
                             id: String(item.id),
-                            measureunit_id: String(item.unit)
+                            unit: String(item.unit)
                         })))
                         setHeaders(tableHeaders.MeasuresUnits)
+                        setReloadTable(() => async () => {
+                            await getMeasureUnits()
+                            setBody(optionsOfMenu.MeasuresUnits.map(item => ({
+                                id: String(item.id),
+                                unit: String(item.unit)
+                            })))
+                        })
                         setPageTitle("MeasureUnits")
                         setEndpoint("measure-units")
-                        setDataToAdd({ Unit: "" })
+                        setDataToAdd({ unit: "" })
                     }}
                     style={{ width: "90%", height: "7%" }}>Tabla de unidades de medida</button>
                 <button
@@ -115,31 +122,30 @@ export default function LeftBar({ setReloadTable, setBody, setHeaders, setOption
                             id: String(item.id),
                             max_stock: String(item.max_stock),
                             min_stock: String(item.min_stock),
-                            measureunit_id: String(measureUnits.find(u => u.id === item.measureunit_id)?.unit),
+                            unit: String(measureUnits.find(u => u.id === item.unit)?.unit),
                             active: item.active === true ? "Activo" : "Inactivo",
-                            frequency_id: String(frequencies.find(f => f.id === item.frequency_id)?.frequency),
+                            frequency: String(frequencies.find(f => f.id === item.frequency)?.frequency),
                             name: String(item.name),
                             stock: String(item.stock)
                         })))
                         setDataToAdd({
                             name: "",
-                            measureunit_id: "",
-                            frequency_id: "",
+                            unit: "",
+                            frequency: "",
                             stock: "",
                             min_stock: "",
                             max_stock: "",
                             active: "",
                         })
                         setReloadTable(() => async () => {
-                            console.log("Recargando...")
                             await getProducts()
                             setBody(optionsOfMenu.Products.map(item => ({
                                 id: String(item.id),
                                 max_stock: String(item.max_stock),
                                 min_stock: String(item.min_stock),
-                                measureunit_id: String(measureUnits.find(u => u.id === item.measureunit_id)?.unit),
+                                unit: String(measureUnits.find(u => u.id === item.unit)?.unit),
                                 active: item.active === true ? "Activo" : "Inactivo",
-                                frequency_id: String(frequencies.find(f => f.id === item.frequency_id)?.frequency),
+                                frequency: String(frequencies.find(f => f.id === item.unit)?.frequency),
                                 name: String(item.name),
                                 stock: String(item.stock)
                             })))

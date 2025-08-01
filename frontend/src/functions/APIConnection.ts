@@ -81,10 +81,11 @@ export default class APIConnection
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async editData(endpoint: string, modifiedData: any)
     {
-        const APIURL: URL = new URL(endpoint, this._BASEURL)
-
-        const response = await fetch(APIURL, {
-            body: modifiedData,
+        const response = await fetch(`${this._BASEURL}/${endpoint}`, {
+            body: JSON.stringify(modifiedData),
+            headers: {
+                "Content-Type": "application/json"
+            },
             method: "PATCH"
         })
 
@@ -93,10 +94,12 @@ export default class APIConnection
         if (!response.ok)
             return {
                 message: data.message,
+                status: false
             }
         
         return {
             message: data.message,
+            status: true
         }
     }
 
@@ -105,6 +108,9 @@ export default class APIConnection
         const APIURL: URL = new URL(endpoint, this._BASEURL)
 
         const response = await fetch(APIURL, {
+            headers: {
+                "Content-Type": "application/json"
+            },
             method: "DELETE"
         })
 
