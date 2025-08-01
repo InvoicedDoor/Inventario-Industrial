@@ -60,10 +60,9 @@ async def add_measure_unit_controller(request: Request, measure_unit_data: Measu
         print(ex)
         return JSONResponse({"message":"Error en el servidor"}, 500)
     
-@measure_units_router.patch("")
-def update_measure_unit_controller(request: Request, measure_unit_data: MeasureUnitsDto):
+@measure_units_router.patch("/{measure_id}")
+def update_measure_unit_controller(request: Request, measure_unit_data: MeasureUnitsDto, measure_id: int = Path(..., gt=0)):
     try:
-        measure_id: int = request.query_params.get("id")
 
         if (measure_id == None or measure_id == ""):
             return JSONResponse({"message":"El parámetro id no puede estar vacío"}, 400)
@@ -73,7 +72,7 @@ def update_measure_unit_controller(request: Request, measure_unit_data: MeasureU
 
         response_service = update_measure_unit_service(measure_id, measure_unit_data)
 
-        return JSONResponse(response_service.message, response_service.code)
+        return JSONResponse({"message": response_service.message}, response_service.code)
     
     except Exception as ex:
         print(ex)
