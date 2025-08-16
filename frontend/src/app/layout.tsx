@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
 import 'bootswatch/dist/pulse/bootstrap.min.css'
-import Image from "next/image";
+import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,19 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
-        <nav className="navbar navbar-expad-lg bg-primary">
-          <div className="container-fluid">
-            <a href="#" className="navbar-brand">
-              <Image
-                src={"/inventario_industrial.svg"}
-                alt=""
-                className="bg-white"
-                style={{ borderRadius: "100%" }}
-                width={50}
-                height={50} />
-            </a>
-          </div>
-        </nav>
+        <Navbar />
         <ToastContainer />
         {children}
       </body>

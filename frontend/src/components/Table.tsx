@@ -30,12 +30,21 @@ export default function Table({Body, Headers, TitlePage, optionsToSelect, setDat
             })
         }
 
+        // Verifica el botón presionado para cargar la información referente a ese botón
         if (TitlePage === "Products")
             setTempDataToEdit(optionsToSelect?.Products as unknown as Array<Record<string, string>>)
         else if (TitlePage === "MeasureUnits")
             setTempDataToEdit(optionsToSelect?.MeasuresUnits as unknown as Array<Record<string, string>>)
         else if (TitlePage === "ConsumptionFrequency")
             setTempDataToEdit(optionsToSelect?.Frequency as unknown as Array<Record<string, string>>)
+        else if (TitlePage === "IntakeTypes")
+            setTempDataToEdit(optionsToSelect?.IntakeTypes as unknown as Array<Record<string, string>>)
+        else if (TitlePage === "Consumers")
+            setTempDataToEdit(optionsToSelect?.Consumers as unknown as Array<Record<string, string>>)
+        else if (TitlePage === "Roles")
+            setTempDataToEdit(optionsToSelect?.Roles as unknown as Array<Record<string, string>>)
+        else if (TitlePage === "Employees")
+            setTempDataToEdit(optionsToSelect?.Employees as unknown as Array<Record<string, string>>)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
@@ -100,7 +109,6 @@ export default function Table({Body, Headers, TitlePage, optionsToSelect, setDat
                                         onMouseLeave={() => handleMouseLeaveEvent(`popper-edit-${rowIndex}`)}
                                         onClick={() => {
                                             setDataToEdit(tempDataToEdit.find(b => String(b["id"]) === String(row["id"])) ?? {})
-                                            console.log(tempDataToEdit.find(b => String(b["id"]) === String(row["id"])))
                                             setViewModalEdit(true)}} >
                                         <FontAwesomeIcon className="h-5" icon={faGear} />
                                     </button>

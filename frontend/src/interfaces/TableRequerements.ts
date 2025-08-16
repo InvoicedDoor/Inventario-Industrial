@@ -2,6 +2,10 @@ import { Dispatch, SetStateAction } from "react";
 import IFrequency from "./IFrequency";
 import IMeasureUnit from "./IMeasureUnit";
 import IProducts from "./IProducts";
+import IIntakeType from "./IIntakeType";
+import IConsumers from "./IConsumers";
+import IRoles from "./IRoles";
+import IEmployees from "./IEmployees";
 
 export default interface TableRequerements
 {
@@ -17,6 +21,10 @@ export default interface TableRequerements
     optionsToSelect?: {
             Frequency?: IFrequency[],
             MeasuresUnits?: IMeasureUnit[],
-            Products?: IProducts[]
+            Products?: IProducts[],
+            IntakeTypes?: IIntakeType[],
+            Consumers: IConsumers[],
+            Roles: IRoles[],
+            Employees: IEmployees[]
         } | null
 }

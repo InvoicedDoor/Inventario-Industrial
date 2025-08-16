@@ -4,9 +4,13 @@ import LeftBar from "@/components/LeftBar";
 import ModalAdd from "@/components/ModalAdd";
 import ModalEdit from "@/components/ModalEdit";
 import Table from "@/components/Table";
+import IConsumers from "@/interfaces/IConsumers";
+import IEmployees from "@/interfaces/IEmployees";
 import IFrequency from "@/interfaces/IFrequency";
+import IIntakeType from "@/interfaces/IIntakeType";
 import IMeasureUnit from "@/interfaces/IMeasureUnit";
 import IProducts from "@/interfaces/IProducts";
+import IRoles from "@/interfaces/IRoles";
 import { useState } from "react";
 
 export default function Index() {
@@ -31,11 +35,19 @@ export default function Index() {
     const [optionsToSelect, setOptionsToSelect] = useState<{
         Frequency: IFrequency[],
         MeasuresUnits: IMeasureUnit[],
-        Products: IProducts[]
+        Products: IProducts[],
+        IntakeTypes: IIntakeType[],
+        Consumers: IConsumers[],
+        Roles: IRoles[],
+        Employees: IEmployees[]
     }>({
         Frequency: [],
         MeasuresUnits: [],
-        Products: []
+        Products: [],
+        IntakeTypes: [],
+        Consumers: [],
+        Roles: [],
+        Employees: []
     });
 
     return <div className="d-flex" style={{ width: "100%", height: "100vh" }}>

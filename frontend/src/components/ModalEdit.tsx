@@ -62,7 +62,7 @@ export default function ModalEdit({data, headers, optionsToSelect, setViewModal,
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white rounded shadow p-6 w-full max-w-md">
                 <div className="flex justify-between items-center border-b mb-4">
-                    <h5 className="text-lg font-semibold">Agrega un nuevo elemento</h5>
+                    <h5 className="text-lg font-semibold">Editar elemento</h5>
                     <button
                         onClick={() => setViewModal(false)}
                         className="text-gray-600 hover:text-red-600"
@@ -75,12 +75,12 @@ export default function ModalEdit({data, headers, optionsToSelect, setViewModal,
                         <div key={headerIndex} style={{ width: "100%" }}>
                             <label className="col-form-label mt-4" htmlFor={`input-${header}$`}>{header}</label>
                             {header == "Activo" ? (
-                                <select value={data[keyHeader]} id={`input-${header}$`} onChange={(e) => handleChangeData(keyHeader, e.target.value)} className="form-control">
+                                <select value={data[keyHeader].toString() === "true" || data[keyHeader] === "1" ? "1" : "0"} id={`input-${header}$`} onChange={(e) => handleChangeData(keyHeader, e.target.value)} className="form-control">
                                     <option value={""} disabled>Selecciona una opción</option>
                                     <option value="1">Sí</option>
                                     <option value="0">No</option>
                                 </select>
-                            ) : keyHeader === "frequency" ? (
+                            ) : keyHeader === "frequency" && pageTitle !== "ConsumptionFrequency" ? (
                                 <select id={`input-${header}$`}
                                     value={data[keyHeader] ?? ""}
                                     onChange={(e) => handleChangeData(keyHeader, e.target.value)}
