@@ -39,7 +39,7 @@ def get_measure_units_by_id_controller(request: Request, measure_id: int = Path(
         
         json_data = jsonable_encoder(measure_unit_data)
 
-        return JSONResponse(json_data, measure_unit.code)
+        return JSONResponse({"data": json_data}, measure_unit.code)
     except Exception as ex:
         empty_measure = MeasureUnitsModel()
         return JSONResponse(empty_measure.model_dump_json(), 500)
@@ -52,7 +52,7 @@ async def add_measure_unit_controller(request: Request, measure_unit_data: Measu
 
         response_service = add_measure_unit_service(measure_unit_data)
 
-        if response_service.data == None:
+        if response_service.data == None or not response_service.ok():
             return JSONResponse({"message": "No se agregó el valor"}, 409)
 
         return JSONResponse({"message": "Registrado"})

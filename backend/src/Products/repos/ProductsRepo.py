@@ -40,6 +40,7 @@ def get_products(filters: ProductsModel):
             return RepoResponse(data=newModel, message="Success")
 
     except Exception as ex:
+        print(ex)
         return RepoResponse(False, f"Error: {ex}")
     
 

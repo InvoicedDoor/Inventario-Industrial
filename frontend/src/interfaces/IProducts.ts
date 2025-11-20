@@ -1,11 +1,11 @@
 export default interface IProducts
 {
-    id: number
+    id?: number
     name: string
     unit: number
     frequency: number
     stock: number
-    min_stock: number
-    max_stock: number
-    active: boolean
+    min_stock?: number
+    max_stock?: number
+    active?: boolean
 }

@@ -25,7 +25,7 @@ def get_products_controller(request: Request):
         return JSONResponse(json_data, products.code)
     
     except Exception as ex:
-        return JSONResponse({"details": "No hay datos"}, 500)
+        return JSONResponse({"message": "No hay datos"}, 500)
     
 
 @products_router.get("/{product_id}")
@@ -35,7 +35,7 @@ def get_product_by_id_controller(request: Request, product_id: int=Path(..., gt=
 
         if product.data == None:
             empty_product = ProductsModel()
-            return JSONResponse({"details": "Producto no encontrado"}, 404)
+            return JSONResponse({"message": "Producto no encontrado"}, 404)
         
         product_data = product.data
 
@@ -46,19 +46,19 @@ def get_product_by_id_controller(request: Request, product_id: int=Path(..., gt=
         return JSONResponse(json_data, product.code)
     
     except Exception as ex:
-        return JSONResponse({"details": "Error en el servidor"}, 500)
+        return JSONResponse({"message": "Error en el servidor"}, 500)
     
 @products_router.post("")
 def add_product_controller(request: Request, product: ProductDto):
     try: 
         response_service = add_product_service(product)
 
-        if response_service.data == False:
-            return JSONResponse(response_service.message, 409)
+        if response_service.data == False or not response_service.ok():
+            return JSONResponse({"message": response_service.message}, 409)
 
         return JSONResponse({"message": "Registrado"})
     except Exception as ex:
-        return JSONResponse({"details": "Error en el servidor"}, 500)
+        return JSONResponse({"message": "Error en el servidor"}, 500)
     
 
 @products_router.patch("/{product_id}")
@@ -67,7 +67,7 @@ def update_product_controller(request: Request, product: ProductDto, product_id:
         existent_product = get_product_by_id_service(product_id)
 
         if existent_product.data == None:
-            return JSONResponse(404, {"details": "No hay productos con ese id"})
+            return JSONResponse(404, {"message": "No hay productos con ese id"})
         
         newProduct: ProductsModel = ProductsModel(
             frequency_id=product.frequency,
@@ -86,4 +86,4 @@ def update_product_controller(request: Request, product: ProductDto, product_id:
             })
 
     except:
-        return JSONResponse(500, {"details": "Hubo un error en el servidor"})
+        return JSONResponse(500, {"message": "Hubo un error en el servidor"})

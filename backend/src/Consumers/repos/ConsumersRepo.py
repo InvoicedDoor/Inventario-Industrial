@@ -1,5 +1,6 @@
 from sqlmodel import Session, select
 from sqlalchemy.orm.attributes import InstrumentedAttribute
+from sqlalchemy.exc import IntegrityError
 from src.Utilities.DBConnection.DBConnect import engine
 from ..models.ConsumersModel import ConsumersModel
 from ..dtos.ConsumersDtos import ConsumersDto
@@ -46,15 +47,16 @@ def get_consumer_by_id(id: int):
 
 def add_consumer(consumer: ConsumersDto):
     try:
-        new_consumer = ConsumersDto(**consumer)
+        new_consumer = ConsumersModel(name=consumer.name)
         with Session(engine) as session:
             session.add(new_consumer)
 
             if len(session.new) > 0:
                 session.commit()
                 return RepoResponse(message="Consumidor agregado")
-            session.rollback()
-            return RepoResponse(False, "El elemento ya existe en la base de datos")
+    except IntegrityError:
+        return RepoResponse(False, "El elemento ya existe en la base de datos")
+    
     except Exception as ex:
         return RepoResponse(False, f"Error: {ex}")
     

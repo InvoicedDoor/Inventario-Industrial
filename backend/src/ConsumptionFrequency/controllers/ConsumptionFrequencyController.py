@@ -23,7 +23,6 @@ def get_consumption_frequencies_controller(request: Request,
         
         return JSONResponse({"data": jsonable_encoder(consumption_frequencies.data)}, 200)
     except Exception as ex:
-        print(ex)
         return JSONResponse({"details": "Información no encontrada"}, 500)
     
 
@@ -49,7 +48,7 @@ def add_consumption_frequency_controller(request: Request, frequency_to_add: Con
     try:        
         response_service = add_consumption_frequency_service(frequency_to_add)
 
-        if response_service.data == False:
+        if response_service.data == False or not response_service.ok():
             return JSONResponse({"detail": response_service.message}, 409)
 
         return JSONResponse({"message": "Agregado"}, 201)

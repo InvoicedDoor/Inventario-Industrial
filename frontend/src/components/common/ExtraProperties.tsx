@@ -1,4 +1,5 @@
 export default function ExtraProperties() {
+
     return (
         <div className="card border-primary text-white">
             <div className="card card-header bg-primary text-center">
@@ -36,8 +37,8 @@ export default function ExtraProperties() {
                                 <label htmlFor="selectExistence" className="col-form-label">Unidad</label>
                             </div>
                             <div className="card border-primary" style={{ width: "12.5rem", padding: 0, height: "100%" }}>
-                            <select className="form-select" style={{ height: "100%", width: "100%" }} name="" id="">
-                                <option disabled selected value="0">Seleccionar</option>
+                            <select defaultValue={"0"} className="form-select" style={{ height: "100%", width: "100%" }} name="" id="">
+                                <option disabled value="0">Seleccionar</option>
                             </select>
                         </div>
                         </div>

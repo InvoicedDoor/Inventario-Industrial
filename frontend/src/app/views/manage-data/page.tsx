@@ -1,9 +1,9 @@
 "use client"
 
-import LeftBar from "@/components/LeftBar";
-import ModalAdd from "@/components/ModalAdd";
-import ModalEdit from "@/components/ModalEdit";
-import Table from "@/components/Table";
+import LeftBar from "@/components/manage-data/LeftBar";
+import ModalAdd from "@/components/manage-data/ModalAdd";
+import ModalEdit from "@/components/manage-data/ModalEdit";
+import Table from "@/components/manage-data/Table";
 import IConsumers from "@/interfaces/IConsumers";
 import IEmployees from "@/interfaces/IEmployees";
 import IFrequency from "@/interfaces/IFrequency";

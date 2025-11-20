@@ -1,22 +1,23 @@
-export default class APIConnection
-{
+export default class APIConnection {
     public _BASEURL: string = ""
 
-    constructor(BASEURL: string)
-    {
+    constructor(BASEURL: string) {
         this._BASEURL = BASEURL
     }
-    
-    public async getAllData(endpoint: string)
-    {
-        const APIURL: URL = new URL(endpoint, this._BASEURL)
 
-        const response = await fetch(APIURL);
+    public async getAllData(endpoint: string) {
+        const response = await fetch(`${this._BASEURL}${endpoint}`,{
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log(response)
 
         if (!response.ok)
             return {
                 message: "Error en la petición",
-                body: null
+                body: []
             }
 
         const data = await response.json();
@@ -24,7 +25,7 @@ export default class APIConnection
         if (data === null)
             return {
                 message: data.message,
-                body: null
+                body: []
             }
 
         return {
@@ -33,11 +34,8 @@ export default class APIConnection
         }
     }
 
-    public async getDataById(endpoint: string)
-    {
-        const APIURL: URL = new URL(endpoint, this._BASEURL)
-
-        const response = await fetch(APIURL);
+    public async getDataById(endpoint: string) {
+        const response = await fetch(`${this._BASEURL}/${endpoint}`);
 
         const data = await response.json()
 
@@ -46,7 +44,7 @@ export default class APIConnection
                 message: data.message,
                 body: null
             }
-        
+
         return {
             message: "Datos encontrados",
             body: data
@@ -54,33 +52,39 @@ export default class APIConnection
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public async addData(endpoint: string, newData: any)
-    {
-        const response = await fetch(`${this._BASEURL}/${endpoint}`, {
-            body: JSON.stringify(newData),
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "POST"
-        })
+    public async addData(endpoint: string, newData: any) {
+        try {
+            const response = await fetch(`${this._BASEURL}/${endpoint}`, {
+                body: JSON.stringify(newData),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "POST"
+            })
 
-        const data = await response.json()
+            const data = await response.json()
 
-        if (!response.ok)
+            if (!response.ok)
+                return {
+                    message: data.message,
+                    status: false
+                }
+
             return {
                 message: data.message,
+                status: true
+            }
+        } catch
+        {
+            return {
+                message: "Error al enviar la información",
                 status: false
             }
-
-        return {
-            message: data.message,
-            status: true
         }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public async editData(endpoint: string, modifiedData: any)
-    {
+    public async editData(endpoint: string, modifiedData: any) {
         const response = await fetch(`${this._BASEURL}/${endpoint}`, {
             body: JSON.stringify(modifiedData),
             headers: {
@@ -96,15 +100,14 @@ export default class APIConnection
                 message: data.message,
                 status: false
             }
-        
+
         return {
             message: data.message,
             status: true
         }
     }
 
-    public async deleteData(endpoint: string)
-    {
+    public async deleteData(endpoint: string) {
         const APIURL: URL = new URL(endpoint, this._BASEURL)
 
         const response = await fetch(APIURL, {

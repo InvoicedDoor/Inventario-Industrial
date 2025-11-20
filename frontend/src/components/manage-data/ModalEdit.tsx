@@ -5,6 +5,7 @@ import IMeasureUnit from "@/interfaces/IMeasureUnit";
 import IProducts from "@/interfaces/IProducts";
 import { toast } from "react-toastify";
 import APIConnection from "@/functions/APIConnection";
+import IRoles from "@/interfaces/IRoles";
 
 export interface ModalEditProps extends ModalManageProps {
     data: Record<string, string>
@@ -13,18 +14,18 @@ export interface ModalEditProps extends ModalManageProps {
     optionsToSelect?: {
         Frequency?: IFrequency[],
         MeasuresUnits?: IMeasureUnit[],
-        Products?: IProducts[]
+        Products?: IProducts[],
+        Roles?: IRoles[],
     } | null
 }
 
 const connection = new APIConnection("http://localhost:8000/api")
 
-export default function ModalEdit({data, headers, optionsToSelect, setViewModal, setDataToEdit, pageTitle, endpoint, reloadTable}: ModalEditProps) {
+export default function ModalEdit({ data, headers, optionsToSelect, setViewModal, setDataToEdit, pageTitle, endpoint, reloadTable }: ModalEditProps) {
     const editElement = async (e: React.MouseEvent<HTMLButtonElement>) => {
         const button = e.currentTarget as HTMLButtonElement;
 
-        try
-        {
+        try {
             button.disabled = true;
             for (const [k, v] of Object.entries(data)) {
                 if (v === "") {
@@ -45,8 +46,7 @@ export default function ModalEdit({data, headers, optionsToSelect, setViewModal,
             button.disabled = false;
             toast.success(request.message);
             await reloadTable();
-        } catch (e)
-        {
+        } catch (e) {
             toast.error(String(e));
             button.disabled = false;
         }
@@ -75,7 +75,7 @@ export default function ModalEdit({data, headers, optionsToSelect, setViewModal,
                         <div key={headerIndex} style={{ width: "100%" }}>
                             <label className="col-form-label mt-4" htmlFor={`input-${header}$`}>{header}</label>
                             {header == "Activo" ? (
-                                <select value={data[keyHeader].toString() === "true" || data[keyHeader] === "1" ? "1" : "0"} id={`input-${header}$`} onChange={(e) => handleChangeData(keyHeader, e.target.value)} className="form-control">
+                                <select value={data[keyHeader]?.toString() === "true" || data[keyHeader] === "1" ? "1" : "0"} id={`input-${header}$`} onChange={(e) => handleChangeData(keyHeader, e.target.value)} className="form-control">
                                     <option value={""} disabled>Selecciona una opción</option>
                                     <option value="1">Sí</option>
                                     <option value="0">No</option>
@@ -90,21 +90,30 @@ export default function ModalEdit({data, headers, optionsToSelect, setViewModal,
                                         <option key={u.id} value={u.id}>{u.frequency}</option>
                                     ))}
                                 </select>) : keyHeader === "unit" && pageTitle !== "MeasureUnits" ? (
-                                <select id={`input-${header}$`}
-                                    value={data[keyHeader]}
-                                    onChange={(e) => handleChangeData(keyHeader, e.target.value)}
-                                    className="form-control">
-                                    <option value={""} disabled>Selecciona una opción</option>
-                                    {optionsToSelect?.MeasuresUnits!.map(u => (
-                                        <option key={u.id} value={u.id}>{u.unit}</option>
-                                    ))}
-                                </select>) : (<input
-                                    id={`input-${header}$`}
-                                    value={data[keyHeader] ?? ""}
-                                    type="text"
-                                    onChange={(e) => handleChangeData(keyHeader, e.target.value)}
-                                    className="form-control"
-                                />
+                                    <select id={`input-${header}$`}
+                                        value={data[keyHeader]}
+                                        onChange={(e) => handleChangeData(keyHeader, e.target.value)}
+                                        className="form-control">
+                                        <option value={""} disabled>Selecciona una opción</option>
+                                        {optionsToSelect?.MeasuresUnits!.map(u => (
+                                            <option key={u.id} value={u.id}>{u.unit}</option>
+                                        ))}
+                                    </select>) : keyHeader === "rol" && pageTitle !== "Roles" ? (
+                                        <select id={`input-${header}$`}
+                                            value={data[keyHeader] ?? ""}
+                                            onChange={(e) => handleChangeData(keyHeader, e.target.value)}
+                                            className="form-control">
+                                            <option value={""} disabled>Selecciona una opción</option>
+                                            {optionsToSelect?.Roles!.map(r => (
+                                                <option key={r.id} value={r.id}>{r.rol}</option>
+                                            ))}
+                                        </select>) : (<input
+                                            id={`input-${header}$`}
+                                            value={data[keyHeader] ?? ""}
+                                            type="text"
+                                            onChange={(e) => handleChangeData(keyHeader, e.target.value)}
+                                            className="form-control"
+                                        />
                             )}
                         </div>
                     ))}

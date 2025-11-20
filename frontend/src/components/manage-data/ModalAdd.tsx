@@ -2,6 +2,7 @@ import APIConnection from "@/functions/APIConnection"
 import IFrequency from "@/interfaces/IFrequency"
 import IMeasureUnit from "@/interfaces/IMeasureUnit"
 import IProducts from "@/interfaces/IProducts"
+import IRoles from "@/interfaces/IRoles"
 import { Dispatch, SetStateAction } from "react"
 import { toast } from "react-toastify"
 
@@ -20,7 +21,8 @@ interface ModalAddProps extends ModalManageProps {
     optionsToSelect?: {
         Frequency?: IFrequency[],
         MeasuresUnits?: IMeasureUnit[],
-        Products?: IProducts[]
+        Products?: IProducts[],
+        Roles?: IRoles[],
     } | null
 }
 
@@ -49,9 +51,15 @@ export default function ModalAdd(props: ModalAddProps) {
                 return;
             }
 
-            button.disabled = false;
-            toast.success(request.message);
             await props.reloadTable();
+
+            props.setDataToAdd(prev => {
+                const cleared = { ...prev };
+                Object.keys(cleared).forEach(k => cleared[k] = "");
+                return cleared;
+            })
+            toast.success(request.message);
+            button.disabled = false;
         } catch (e)
         {
             toast.error(String(e));
@@ -112,7 +120,16 @@ export default function ModalAdd(props: ModalAddProps) {
                                         <option key={u.id} value={u.id}>{u.unit}</option>
                                     ))}
                                 </select>
-                            ) : (
+                            ) : keyHeader === "rol" && props.pageTitle !== "Roles" ? (
+                                <select id={`input-${header}$`}
+                                    value={props.dataToAdd[keyHeader] ?? ""}
+                                    onChange={(e) => handleChangeData(keyHeader, e.target.value)}
+                                    className="form-control">
+                                    <option value={""} disabled>Selecciona una opción</option>
+                                    {props.optionsToSelect?.Roles!.map(r => (
+                                        <option key={r.id} value={r.id}>{r.rol}</option>
+                                    ))}
+                                </select> ) : (
                                     <input id={`input-${header}$`}
                                         value={props.dataToAdd[keyHeader] ?? ""}
                                         onChange={(e) => handleChangeData(keyHeader, e.target.value)}

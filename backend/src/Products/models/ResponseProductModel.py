@@ -3,9 +3,9 @@ from pydantic import BaseModel
 class ResponseProductsModel(BaseModel):
     id: int
     name: str
-    unit: int
-    frequency: int
-    stock: float
-    min_stock: float
-    max_stock: float
-    active: bool
+    unit: int | None
+    frequency: int | None
+    stock: float | None
+    min_stock: float | None
+    max_stock: float | None
+    active: bool | None

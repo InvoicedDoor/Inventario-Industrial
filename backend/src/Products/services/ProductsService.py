@@ -40,7 +40,14 @@ def add_product_service(product: ProductDto):
         if exist_product.is_success and len(exist_product.data) > 0:
             return ServiceResponse(409, "El producto ya existe en la base de datos")
         
-        new_product = ProductDto(**product.model_dump())
+        new_product = ProductsModel(
+            name=product.name,
+            frequency_id=product.frequency,
+            max_stock=product.max_stock,
+            measureunit_id=product.unit,
+            min_stock=product.min_stock,
+            stock=product.stock,
+            active=product.active)
         
         add_response = add_product(new_product)
 
@@ -48,6 +55,8 @@ def add_product_service(product: ProductDto):
             return ServiceResponse(400, "No se pudo agregar el producto")
         
         return ServiceResponse(message="Agregado", data=add_response.is_success)
+
+        return ServiceResponse(message="Agregado")
     
     except Exception as ex:
         return ServiceResponse(500, f"Error: {ex}")

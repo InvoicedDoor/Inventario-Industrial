@@ -1,0 +1,4 @@
+.text-outline {
+    color: white; /* color del texto */
+    -webkit-text-stroke: 2px black; /* borde negro */
+}
