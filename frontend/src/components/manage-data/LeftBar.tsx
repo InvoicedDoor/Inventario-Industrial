@@ -1,10 +1,10 @@
 import IConsumers from "@/interfaces/IConsumers";
 import IFrequency from "@/interfaces/IFrequency";
-import IIntakeType from "@/interfaces/IIntakeType";
+import IConsumptionType from "@/interfaces/IConsumptionType";
 import IMeasureUnit from "@/interfaces/IMeasureUnit";
 import IProducts from "@/interfaces/IProducts";
 import IRoles from "@/interfaces/IRoles";
-import { Dispatch, SetStateAction } from "react";
+import { CSSProperties, Dispatch, SetStateAction } from "react";
 import LeftButtonBar from "./LeftBarButton";
 import IEmployees from "@/interfaces/IEmployees";
 import TableHeaders from "@/dictionaries/TableHeaders";
@@ -21,11 +21,17 @@ export interface LeftBarProps {
         Frequency: IFrequency[],
         MeasuresUnits: IMeasureUnit[],
         Products: IProducts[],
-        IntakeTypes: IIntakeType[],
+        ConsumptionType: IConsumptionType[],
         Consumers: IConsumers[],
         Roles: IRoles[],
         Employees: IEmployees[]
     }>>
+}
+
+const leftBarStyles: CSSProperties = { 
+    height: "90%",
+    overflowY: "scroll",
+    scrollbarWidth: "none"
 }
 
 export default function LeftBar({ setReloadTable, setBody, setHeaders, setOptionsToSelect, setPageTitle, setDataToAdd, setEndpoint }: LeftBarProps) {
@@ -35,14 +41,14 @@ export default function LeftBar({ setReloadTable, setBody, setHeaders, setOption
         optionsOfMenu,
         getMeasureUnits,
         getRoles,
-        getIntakeTypes,
+        getConsumptionType,
         getProducts,
         getConsumers,
         getEmployees,
     } = TableInfo();
 
     return (
-        <div style={{ height: "90%" }} className="bg-secondary d-flex align-items-start justify-center">
+        <div style={leftBarStyles} className="bg-secondary d-flex align-items-start justify-center">
             <div style={{ height: "100%" }}>
                 <LeftButtonBar
                     buttonName="frecuencia"
@@ -149,21 +155,21 @@ export default function LeftBar({ setReloadTable, setBody, setHeaders, setOption
                     setDataToAdd={setDataToAdd}
                     setOptionsToSelect={setOptionsToSelect}
                     optionsOfMenu={optionsOfMenu}
-                    pageTitle="IntakeTypes"
-                    endpoint="intake-type"
-                    headers={tableHeaders.IntakeTypes}
-                    body={optionsOfMenu.IntakeTypes.map(item => ({
+                    pageTitle="ConsumptionType"
+                    endpoint="consumption-type"
+                    headers={tableHeaders.ConsumptionType}
+                    body={optionsOfMenu.ConsumptionType.map(item => ({
                         id: String(item.id),
-                        intake_type: String(item.intake_type)
+                        consumption_type: String(item.consumption_type)
                     }))}
                     reloadTable={() => async () => {
-                        optionsOfMenu.IntakeTypes = await getIntakeTypes()
-                        setBody(optionsOfMenu.IntakeTypes.map(item => ({
+                        optionsOfMenu.ConsumptionType = await getConsumptionType()
+                        setBody(optionsOfMenu.ConsumptionType.map(item => ({
                             id: String(item.id),
-                            intake_type: String(item.intake_type)
+                            consumption_type: String(item.consumption_type)
                         })))
                     }}
-                    dataToAdd={{ "intake_type": "" }}
+                    dataToAdd={{ "consumption_type": "" }}
                 />
 
                 <LeftButtonBar

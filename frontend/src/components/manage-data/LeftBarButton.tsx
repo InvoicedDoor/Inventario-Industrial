@@ -2,7 +2,7 @@ import IFrequency from "@/interfaces/IFrequency";
 import { LeftBarProps } from "./LeftBar";
 import IMeasureUnit from "@/interfaces/IMeasureUnit";
 import IProducts from "@/interfaces/IProducts";
-import IIntakeType from "@/interfaces/IIntakeType";
+import IConsumptionType from "@/interfaces/IConsumptionType";
 import IRoles from "@/interfaces/IRoles";
 import IConsumers from "@/interfaces/IConsumers";
 import IEmployees from "@/interfaces/IEmployees";
@@ -19,7 +19,7 @@ interface ILeftButtonBar extends LeftBarProps {
             Frequency: IFrequency[],
             MeasuresUnits: IMeasureUnit[],
             Products: IProducts[],
-            IntakeTypes: IIntakeType[],
+            ConsumptionType: IConsumptionType[],
             Consumers: IConsumers[],
             Roles: IRoles[],
             Employees: IEmployees[]

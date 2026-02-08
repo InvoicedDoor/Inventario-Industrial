@@ -3,10 +3,11 @@ import APIConnection from "@/functions/APIConnection"
 import IConsumers from "@/interfaces/IConsumers"
 import IEmployees from "@/interfaces/IEmployees"
 import IFrequency from "@/interfaces/IFrequency"
-import IIntakeType from "@/interfaces/IIntakeType"
+import IConsumptionType from "@/interfaces/IConsumptionType"
 import IMeasureUnit from "@/interfaces/IMeasureUnit"
 import IProducts from "@/interfaces/IProducts"
 import IRoles from "@/interfaces/IRoles"
+import ISeller from "@/interfaces/ISeller"
 
 const connection = new APIConnection("http://localhost:8000/api")
 
@@ -14,10 +15,11 @@ export default function TableInfo() {
     const [frequencies, setFrequencies] = useState<IFrequency[]>([])
     const [measureUnits, setMeasureUnits] = useState<IMeasureUnit[]>([])
     const [products, setProducts] = useState<IProducts[]>([])
-    const [intakeTypes, setIntakeTypes] = useState<IIntakeType[]>([])
+    const [consumptionType, setConsumptionType] = useState<IConsumptionType[]>([])
     const [consumers, setConsumers] = useState<IConsumers[]>([])
     const [roles, setRoles] = useState<IRoles[]>([])
     const [employees, setEmployees] = useState<IEmployees[]>([])
+    const [sellers, setSellers] = useState<ISeller[]>([])
 
     const getFrequencies = async () => {
         const request = await connection.getAllData("/consumption-frequency");
@@ -41,10 +43,10 @@ export default function TableInfo() {
         // optionsOfMenu.Products = data;
     }
 
-    const getIntakeTypes = async () => {
-        const request = await connection.getAllData("/intake-type");
+    const getConsumptionType = async () => {
+        const request = await connection.getAllData("/consumption-type");
         const data = request.body["data"];
-        setIntakeTypes(data);
+        setConsumptionType(data);
         return data;
         // optionsOfMenu.IntakeTypes = data;
     }
@@ -73,14 +75,22 @@ export default function TableInfo() {
         // optionsOfMenu.Employees = data;
     }
 
+    const getSellers = async () => {
+        const request = await connection.getAllData("/sellers");
+        const data = request.body["data"];
+        setSellers(data);
+        return data
+    }
+
     useEffect(() => {
         getFrequencies()
         getMeasureUnits()
         getProducts()
-        getIntakeTypes()
+        getConsumptionType()
         getConsumers()
         getRoles()
         getEmployees()
+        getSellers()
     }, []);
 
     return{
@@ -88,15 +98,16 @@ export default function TableInfo() {
             Frequency: frequencies,
             MeasuresUnits: measureUnits,
             Products: products,
-            IntakeTypes: intakeTypes,
+            ConsumptionType: consumptionType,
             Consumers: consumers,
+            Sellers: sellers,
             Roles: roles,
             Employees: employees,
         },
         getFrequencies,
         getMeasureUnits,
         getProducts,
-        getIntakeTypes,
+        getConsumptionType,
         getConsumers,
         getRoles,
         getEmployees,

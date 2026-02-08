@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import IFrequency from "./IFrequency";
 import IMeasureUnit from "./IMeasureUnit";
 import IProducts from "./IProducts";
-import IIntakeType from "./IIntakeType";
+import IIntakeType from "./IConsumptionType";
 import IConsumers from "./IConsumers";
 import IRoles from "./IRoles";
 import IEmployees from "./IEmployees";

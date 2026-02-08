@@ -1,9 +1,9 @@
-from ..repos.IntakeTypesRepo import (get_intake_types,
+from ..repos.ConsumptionTypeRepo import (get_intake_types,
                                   get_intake_type_by_id,
                                   add_intake_type,
                                   modify_intake_type)
-from ..models.IntakeTypesModel import IntakesTypeModel
-from ..dtos.IntakeTypesDto import IntakeTypeDto
+from ..models.ConsumptionTypeModel import ConsumptionTypeModel
+from ..dtos.ConsumptionTypeDto import IntakeTypeDto
 from src.Utilities.models.ServiceResponse import ServiceResponse
 
 def get_intake_types_service(filters: IntakeTypeDto):
@@ -53,14 +53,14 @@ def add_intake_type_service(intake_type: IntakeTypeDto):
         return ServiceResponse(500, f"Error: {ex}")
     
 
-def update_intake_type_service(product_id: int, product: IntakesTypeModel):
+def update_intake_type_service(product_id: int, product: ConsumptionTypeModel):
     try:
         response_product = get_intake_type_by_id(product_id)
 
         if not response_product.is_success:
             return ServiceResponse(404, "No se encontró el producto")
         
-        actual_product: IntakesTypeModel = response_product.data
+        actual_product: ConsumptionTypeModel = response_product.data
 
         for field, value in product.model_dump(exclude_unset=True).items():
             setattr(actual_product, field, value)

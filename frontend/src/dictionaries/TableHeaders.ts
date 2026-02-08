@@ -14,8 +14,8 @@ const TableHeaders = {
         max_stock: "Stock máximo",
         active: "Activo"
     },
-    IntakeTypes: {
-        intake_type: "Tipo de consumo"
+    ConsumptionType: {
+        consumption_type: "Tipo de consumo"
     },
     Consumers: {
         name: "Consumidor"

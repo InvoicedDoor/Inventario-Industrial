@@ -12,8 +12,6 @@ export default class APIConnection {
             }
         });
 
-        console.log(response)
-
         if (!response.ok)
             return {
                 message: "Error en la petición",

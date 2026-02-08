@@ -7,7 +7,7 @@ import Table from "@/components/manage-data/Table";
 import IConsumers from "@/interfaces/IConsumers";
 import IEmployees from "@/interfaces/IEmployees";
 import IFrequency from "@/interfaces/IFrequency";
-import IIntakeType from "@/interfaces/IIntakeType";
+import IConsumptionType from "@/interfaces/IConsumptionType";
 import IMeasureUnit from "@/interfaces/IMeasureUnit";
 import IProducts from "@/interfaces/IProducts";
 import IRoles from "@/interfaces/IRoles";
@@ -36,7 +36,7 @@ export default function Index() {
         Frequency: IFrequency[],
         MeasuresUnits: IMeasureUnit[],
         Products: IProducts[],
-        IntakeTypes: IIntakeType[],
+        ConsumptionType: IConsumptionType[],
         Consumers: IConsumers[],
         Roles: IRoles[],
         Employees: IEmployees[]
@@ -44,7 +44,7 @@ export default function Index() {
         Frequency: [],
         MeasuresUnits: [],
         Products: [],
-        IntakeTypes: [],
+        ConsumptionType: [],
         Consumers: [],
         Roles: [],
         Employees: []
